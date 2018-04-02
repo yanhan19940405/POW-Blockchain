@@ -1,0 +1,288 @@
+<html>  
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+<meta name="keyword" content="tencent"></meta>
+<meta name="description" content="tencent"></meta>
+<meta name="author" content=""></meta>
+<title>Block</title>
+<script src="ctyo.js"></script>
+<script>
+var i=0
+var myDate = new Date()
+time=myDate.toLocaleString( )
+//创世区块结构
+class Block {
+ constructor(index, timestamp, data, previousHash = '',nonce) {
+ this.index = index
+ this.previousHash = previousHash
+ this.timestamp = timestamp
+ this.data = data
+ this.nonce=0
+ this.hash = this.calculateHash0()
+
+ }
+//工作量证明机制
+ calculateHash0() {
+ for (var k = 0; k>= 0 &&k<=100000; k++) {
+    var test1=CryptoJS.SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data+this.nonce)).toString()
+ 	if (test1.slice(0,4)!="0000") {
+ 	test1=test1
+    console.log(test1)
+    this.nonce=k
+ 	}
+ 	else if(test1.slice(0,4)=="0000"){
+      return test1
+ 	}
+ }
+ }
+ 
+
+}
+let v=new Block(1,time,"The first Bitcoin action",0,0)
+//区块1结构
+class Blockchain extends Block {
+ constructor(index, timestamp, data, previousHash,hash,nonce) {
+ super(index, hash )
+ this.index = index;
+ this.previousHash = v.hash;
+ this.timestamp = timestamp;
+ this.data = data
+this.nonce=0
+ this.hash = this.calculateHash1()
+ 
+ }
+ 
+ calculateHash1() {
+  for (var k1 = 0; k1>= 0 &&k1<=100000; k1++) {
+    var test2=CryptoJS.SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data+this.nonce)).toString()
+ 	if (test2.slice(0,4)!="0000") {
+ 	test2=test2
+    console.log(test2)
+    this.nonce=k1
+ 	}
+ 	else if(test2.slice(0,4)=="0000"){
+      return test2
+ 	}
+ }
+ 
+}
+
+}
+ let v1=new Blockchain(2,time,"VKYHTESTRESOURCE",v.hash,0)
+ //区块2结构
+class Blockchain2 extends Blockchain {
+ constructor(index, timestamp, data, previousHash,hash ,nonce) {
+ super(index, hash )
+ this.index = index;
+ this.previousHash = v1.hash;
+ this.timestamp = timestamp;
+ this.data = data;
+ this.nonce=0;
+ this.hash = this.calculateHash2()
+ }
+
+ calculateHash2() {
+ 
+ for (var k2= 0; k2>= 0 &&k2<=100000; k2++) {
+    var test3=CryptoJS.SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data+this.nonce)).toString()
+ 	if (test3.slice(0,4)!="0000") {
+ 	test3=test3
+    console.log(test3)
+    this.nonce=k2
+ 	}
+ 	else if(test3.slice(0,4)=="0000"){
+      return test3
+ 	}
+ }
+ 
+}
+
+}
+ let v2=new Blockchain2(3,time,"VKYHTESTRESOURCEDEMO",v1.hash,0)
+//下面为浏览器展示区块链结构，模拟区块挂载
+function creatDiv(){ 
+
+let v=new Block(1,time,"The first Bitcoin action",0,0)
+var oDiv=document.createElement("div"); 
+ 
+oDiv.style.border="1px solid black";  
+oDiv.style.width="80%";  
+oDiv.style.height="300px";  
+oDiv.style.backgroundColor="red";  
+oDiv.id='div'+i; 
+document.body.appendChild(oDiv); 
+var para=document.createElement("h1");
+var input1=document.createElement("input")
+var node=document.createTextNode("创世区块");
+/*向<p>元素追加这个文本节点*/
+document.body.appendChild(oDiv).appendChild(para).appendChild(node);  
+var oDiv1 = document.createElement('div');
+//'<span>DATA: <input  placeholder="Search W3School" /><button>生成区块</button></span>';
+console.log(v)
+oDiv1.innerHTML = 
+	'<span>DATA: '+v.data;
+document.body.appendChild(oDiv).appendChild(oDiv1)
+var oDiv2 = document.createElement('div');
+oDiv2.innerHTML = 
+	'<span>PREVIOUS HASH: </span>'+v.previousHash;
+document.body.appendChild(oDiv).appendChild(oDiv2)
+var oDiv3 = document.createElement('div');
+oDiv3.innerHTML = 
+	'<span>HASH: </span>'+v.hash;
+document.body.appendChild(oDiv).appendChild(oDiv3)
+var oDiv4 = document.createElement('div');
+oDiv4.innerHTML = 
+	'<span>TIME: </span>'+v.timestamp;
+document.body.appendChild(oDiv).appendChild(oDiv4)
+var oDiv5 = document.createElement('div');
+oDiv5.innerHTML = 
+	'<span>INDEX: </span>'+v.index;
+document.body.appendChild(oDiv).appendChild(oDiv5)
+var oDiv6 = document.createElement('div');
+oDiv6.innerHTML = 
+	'<span>NONCE: </span>'+v.nonce;
+document.body.appendChild(oDiv).appendChild(oDiv6)
+var addinput=document.createElement("input");  
+addinput.type='button';  
+addinput.id='add'+i;  
+addinput.onclick=creatDiv2;  
+addinput.value='create'+i;  
+document.body.appendChild(addinput);  
+var rminput=document.createElement("input");  
+rminput.type='button';  
+rminput.id=''+i;         
+rminput.onclick=removeblock; 
+rminput.value='remove'+i;  
+document.body.appendChild(rminput);  
+i++;  
+}
+function creatDiv2(){ 
+ let v1=new Blockchain(2,time,"VKYHTESTRESOURCE",v.hash,0)
+console.log(v1)
+
+var oDiv=document.createElement("div"); 
+ 
+oDiv.style.border="1px solid black";  
+oDiv.style.width="80%";  
+oDiv.style.height="300px";  
+oDiv.style.backgroundColor="green";  
+oDiv.id='div'+i; 
+document.body.appendChild(oDiv); 
+var para=document.createElement("h1");
+var input1=document.createElement("input")
+var node=document.createTextNode("区块1");
+/*向<p>元素追加这个文本节点*/
+document.body.appendChild(oDiv).appendChild(para).appendChild(node);  
+var oDiv1 = document.createElement('div');
+//'<span>DATA: <input  placeholder="Search W3School" /><button>生成区块</button></span>';
+oDiv1.innerHTML = 
+	'<span>DATA: '+v1.data;
+document.body.appendChild(oDiv).appendChild(oDiv1)
+var oDiv2 = document.createElement('div');
+oDiv2.innerHTML = 
+	'<span>PREVIOUS HASH: </span>'+v1.previousHash;
+document.body.appendChild(oDiv).appendChild(oDiv2)
+var oDiv3 = document.createElement('div');
+oDiv3.innerHTML = 
+	'<span>HASH: </span>'+v1.hash;
+document.body.appendChild(oDiv).appendChild(oDiv3)
+var oDiv4 = document.createElement('div');
+oDiv4.innerHTML = 
+	'<span>TIME: </span>'+v1.timestamp;
+document.body.appendChild(oDiv).appendChild(oDiv4)
+var oDiv5 = document.createElement('div');
+oDiv5.innerHTML = 
+	'<span>INDEX: </span>'+v1.index;
+document.body.appendChild(oDiv).appendChild(oDiv5)
+var oDiv6 = document.createElement('div');
+oDiv6.innerHTML = 
+	'<span>NONCE: </span>'+v1.nonce;
+document.body.appendChild(oDiv).appendChild(oDiv6)
+var addinput=document.createElement("input");  
+addinput.type='button';  
+addinput.id='add'+i;  
+addinput.onclick=creatDiv3;  
+addinput.value='create'+i;  
+document.body.appendChild(addinput);  
+var rminput=document.createElement("input");  
+rminput.type='button';  
+rminput.id=''+i;         
+rminput.onclick=removeblock; 
+rminput.value='remove'+i;  
+document.body.appendChild(rminput);  
+i++;  
+}
+function creatDiv3(){ 
+
+
+console.log(v2)
+
+var oDiv=document.createElement("div"); 
+ 
+oDiv.style.border="1px solid black";  
+oDiv.style.width="80%";  
+oDiv.style.height="300px";  
+oDiv.style.backgroundColor="yellow";  
+oDiv.id='div'+i; 
+document.body.appendChild(oDiv); 
+var para=document.createElement("h1");
+var input1=document.createElement("input")
+var node=document.createTextNode("区块2");
+/*向<p>元素追加这个文本节点*/
+document.body.appendChild(oDiv).appendChild(para).appendChild(node);  
+var oDiv1 = document.createElement('div');
+//'<span>DATA: <input  placeholder="Search W3School" /><button>生成区块</button></span>';
+oDiv1.innerHTML = 
+	'<span>DATA: '+v2.data;
+document.body.appendChild(oDiv).appendChild(oDiv1)
+var oDiv2 = document.createElement('div');
+oDiv2.innerHTML = 
+	'<span>PREVIOUS HASH: </span>'+v2.previousHash;
+document.body.appendChild(oDiv).appendChild(oDiv2)
+var oDiv3 = document.createElement('div');
+oDiv3.innerHTML = 
+	'<span>HASH: </span>'+v2.hash;
+document.body.appendChild(oDiv).appendChild(oDiv3)
+var oDiv4 = document.createElement('div');
+oDiv4.innerHTML = 
+	'<span>TIME: </span>'+v2.timestamp;
+document.body.appendChild(oDiv).appendChild(oDiv4)
+var oDiv5 = document.createElement('div');
+oDiv5.innerHTML = 
+	'<span>INDEX: </span>'+v2.index;
+document.body.appendChild(oDiv).appendChild(oDiv5)
+var oDiv6 = document.createElement('div');
+oDiv6.innerHTML = 
+	'<span>NONCE: </span>'+v2.nonce;
+document.body.appendChild(oDiv).appendChild(oDiv6)
+var addinput=document.createElement("input");  
+addinput.type='button';  
+addinput.id='add'+i;  
+//addinput.onclick="";  //此处可以后续扩展具体区块数目
+addinput.value='create'+i;  
+document.body.appendChild(addinput);  
+var rminput=document.createElement("input");  
+rminput.type='button';  
+rminput.id=''+i;         
+rminput.onclick=removeblock; 
+rminput.value='remove'+i;  
+document.body.appendChild(rminput);  
+i++;  
+}
+function removeblock(){  
+    var id=this.id;           
+    document.body.removeChild(document.getElementById('div'+id));  
+    document.body.removeChild(document.getElementById('add'+id));  
+    document.body.removeChild(document.getElementById(''+id));  
+}  
+</script>
+
+</head>
+<body>
+ 
+<script >
+creatDiv()
+removeblock()
+</script>
+</body>
+</html>
